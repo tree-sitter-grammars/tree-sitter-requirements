@@ -1,0 +1,49 @@
+[project]
+name = "tree-sitter-requirements"
+version = "0.1.0"
+description = "A tree-sitter parser for requirements.txt files"
+keywords = ["tree-sitter", "parser", "lexer"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Compilers",
+    "Topic :: Text Processing :: Linguistic"
+]
+dependencies = ["tree-sitter~=0.20"]
+requires-python = ">=3.8"
+
+[project.license]
+text = "MIT"
+
+[project.readme]
+file = "README.rst"
+content-type = "text/x-rst"
+
+[project.urls]
+Homepage = "https://github.com/ObserverOfTime/tree-sitter-requirements"
+Issues = "https://github.com/ObserverOfTime/tree-sitter-requirements/issues"
+Sponsor = "https://github.com/sponsors/ObserverOfTime"
+
+[[project.authors]]
+name = "ObserverOfTime"
+email = "chronobserver@disroot.org"
+
+[tool.cibuildwheel]
+build = "cp38-*"
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64"]
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
+
+[tool.cibuildwheel.macos]
+archs = ["universal2"]
+
+[build-system]
+requires = [
+  "setuptools>=42",
+  "tree-sitter~=0.20",
+  "wheel"
+]
+build-backend = "setuptools.build_meta"

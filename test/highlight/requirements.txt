@@ -1,0 +1,40 @@
+# This is a comment, to show how #-prefixed lines are ignored.
+# <- comment
+
+pytest
+# <- variable
+
+docopt == 0.6.1
+# <- variable
+#      ^^ operator
+#         ^^^^^ number
+
+requests [security] >= 2.8.1, == 2.8.* ; python_version < "2.7"
+# <- variable
+#        ^ punctuation.bracket
+#         ^^^^^^^^ variable.parameter
+#                 ^ punctuation.bracket
+#                   ^^ operator
+#                      ^^^^^ number
+#                           ^ punctuation.delimiter
+#                             ^^ operator
+#                                ^^^^^ number
+#                                      ^ punctuation.delimiter
+#                                        ^^^^^^^^^^^^^^ attribute
+#                                                       ^ operator
+#                                                         ^^^^^ string
+
+urllib3 @ https://github.com/urllib3/urllib3/archive/refs/tags/1.26.8.zip
+# <- variable
+#       ^ punctuation.delimiter
+#         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ markup.link.url
+
+-c constraints.txt
+# <- function
+#  ^^^^^^^^^^^^^^^ string.special
+
+./downloads/numpy-1.9.2-cp34-none-win32.whl
+# <- markup.link
+
+http://wxpython.org/Phoenix/snapshot-builds/wxPython_Phoenix-3.0.3.dev1820+49a8884-cp34-none-win_amd64.whl
+# <- markup.link.url

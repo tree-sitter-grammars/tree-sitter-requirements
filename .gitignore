@@ -1,0 +1,13 @@
+.venv/
+*.egg-info/
+node_modules/
+package-lock.json
+yarn.lock
+Cargo.lock
+
+dist/
+build/
+target/
+*.wasm
+*.dll
+*.so

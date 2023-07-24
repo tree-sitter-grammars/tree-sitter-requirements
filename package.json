@@ -1,0 +1,40 @@
+{
+  "name": "tree-sitter-requirements",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "pip requirements grammar for tree-sitter",
+  "repository": "ObserverOfTime/tree-sitter-requirements",
+  "author": {
+    "name": "ObserverOfTime",
+    "email": "chronobserver@disroot.org",
+    "url": "https://observeroftime.github.io/"
+  },
+  "keywords": [
+    "tree-sitter",
+    "parser",
+    "lexer"
+  ],
+  "scripts": {
+    "generate": "tree-sitter generate",
+    "highlight": "tree-sitter highlight",
+    "parse": "tree-sitter parse",
+    "test": "tree-sitter test"
+  },
+  "main": "bindings/node",
+  "dependencies": {
+    "nan": "^2.17.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.20.8"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.requirements",
+      "highlights": "src/tree_sitter_requirements/queries/highlights.scm",
+      "file-types": [
+        "requirements.txt",
+        "pip"
+      ]
+    }
+  ]
+}
