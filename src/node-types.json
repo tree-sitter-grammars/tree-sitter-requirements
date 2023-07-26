@@ -95,17 +95,18 @@
     }
   },
   {
-    "type": "marker",
+    "type": "marker_op",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "marker_spec",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
-        {
-          "type": "marker",
-          "named": true
-        },
         {
           "type": "marker_op",
           "named": true
@@ -120,26 +121,6 @@
         },
         {
           "type": "version_cmp",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "marker_op",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "marker_spec",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "marker",
           "named": true
         }
       ]

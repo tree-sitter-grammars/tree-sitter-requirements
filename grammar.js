@@ -130,12 +130,12 @@ module.exports = grammar({
       '<', '<=', '!=', '==', '>=', '>', '!=', '===', '~='
     ),
 
-    marker_spec: $ => seq(
+    marker_spec: $ => prec.right(seq(
       optional($._space),
       ';',
       optional($._space),
-      alias($._marker_or, $.marker)
-    ),
+      $._marker
+    )),
 
     marker_op: $ => choice('in', seq('not', $._space, 'in')),
 
@@ -154,43 +154,43 @@ module.exports = grammar({
       'extra'
     ),
 
-    _marker_expr: $ => choice(
-      seq(
-        $.marker_var,
-        optional($._space),
-        choice($.version_cmp, $.marker_op),
-        optional($._space),
-        $.quoted_string
-      ),
-      seq(
-        '(',
-        optional($._space),
-        alias($._marker_or, $.marker),
-        optional($._space),
-        ')'
-      )
+    _marker: $ => choice(
+      $._marker_expr,
+      $._marker_or,
+      $._marker_and,
+      $._marker_paren
     ),
 
-    _marker_and: $ => prec.left(choice(
-      seq(
-        $._marker_expr,
+    _marker_expr: $ => seq(
+      $.marker_var,
+      optional($._space),
+      choice($.version_cmp, $.marker_op),
+      optional($._space),
+      $.quoted_string
+    ),
+
+    _marker_paren: $ => prec.left(seq(
+      '(',
+      optional($._space),
+      $._marker,
+      optional($._space),
+      ')'
+    )),
+
+    _marker_and: $ => prec.left(seq(
+        $._marker,
         optional($._space),
         alias('and', $.marker_op),
         optional($._space),
-        $._marker_expr
-      ),
-      $._marker_expr
-    )),
+        $._marker
+      )),
 
-    _marker_or: $ => prec.left(choice(
-      seq(
-        $._marker_and,
-        optional($._space),
-        alias('or', $.marker_op),
-        optional($._space),
-        $._marker_and
-      ),
-      $._marker_and
+    _marker_or: $ => prec.left(seq(
+      $._marker,
+      optional($._space),
+      alias('or', $.marker_op),
+      optional($._space),
+      $._marker
     )),
 
     global_opt: $ => prec.left(1, choice(

@@ -20,7 +20,7 @@
 
 (marker_op) @keyword
 
-(marker (quoted_string) @string)
+(marker_spec (quoted_string) @string)
 
 ;; options
 

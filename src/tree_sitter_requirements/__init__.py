@@ -1,4 +1,4 @@
-"""PyPA manifest parser"""
+"""pip requirements parser"""
 
 from ._core import parse, query, highlights
 
