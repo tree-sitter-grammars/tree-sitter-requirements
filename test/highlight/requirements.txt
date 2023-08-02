@@ -31,7 +31,6 @@ urllib3 @ https://github.com/urllib3/urllib3/archive/refs/tags/1.26.8.zip
 
 -c constraints.txt
 # <- function
-#  ^^^^^^^^^^^^^^^ string.special
 
 ./downloads/numpy-1.9.2-cp34-none-win32.whl
 # <- markup.link
@@ -47,3 +46,11 @@ git+https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/user/project.git
 #                          ^^ punctuation.special
 #                            ^^^^^^^^^^^^ constant
 #                                        ^ punctuation.special
+
+FooProject >= 1.2 --global-option="--no-user-cfg"
+# <- variable
+#          ^^ operator
+#             ^^^ number
+#                 ^^^^^^^^^^^^^^^ function
+#                                ^ operator
+#                                 ^^^^^^^^^^^^^^^ string

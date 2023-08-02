@@ -6,7 +6,6 @@
  * @see {@link https://peps.python.org/pep-0508/|dependency specification}
  * @see {@link https://peps.python.org/pep-0440/|version identification}
  * @see {@link https://pip.pypa.io/en/stable/topics/vcs-support/|VCS support}
- * @todo Support per-requirement options
  * @todo Support environment variables everywhere
  */
 
@@ -55,7 +54,8 @@ module.exports = grammar({
         $.version_spec,
         $.url_spec
       )),
-      optional($.marker_spec)
+      optional($.marker_spec),
+      repeat($.requirement_opt)
     )),
 
     package: _ => /[a-zA-Z0-9]([a-zA-Z0-9._-]*[a-zA-Z0-9])?/,
@@ -124,12 +124,11 @@ module.exports = grammar({
       ))
     )),
 
-    // TODO: parse version fields
     version: _ => /[a-zA-Z0-9*!+._-]+/,
 
-    version_cmp: _ => choice(
+    version_cmp: _ => token(choice(
       '<', '<=', '!=', '==', '>=', '>', '!=', '===', '~='
-    ),
+    )),
 
     marker_spec: $ => prec.right(seq(
       optional($._space),
@@ -211,7 +210,6 @@ module.exports = grammar({
             '--constraint',
             '--requirement',
             '--editable',
-            '--index-url',
             '--find-links',
             '--no-binary',
             '--only-binary',
@@ -234,10 +232,24 @@ module.exports = grammar({
       )
     )),
 
+    requirement_opt: $ => seq(
+      optional($._space),
+      alias(
+        choice(
+          '--global-option',
+          '--config-settings',
+          '--hash'
+        ),
+        $.option
+      ),
+      choice('=', $._space),
+      $.argument
+    ),
+
     argument: $ => choice(
       repeat1(/(\S|\\ )/),
       $.quoted_string,
-      $.env_var,
+      $.url
     ),
 
     quoted_string: _ => choice(
@@ -256,6 +268,6 @@ module.exports = grammar({
 
     comment: _ => /#[^\n]*/,
 
-    _space: _ => prec(-1, /[ \t]+/)
+    _space: _ => prec(-1, repeat1(/[ \t]/))
   }
 });

@@ -20,15 +20,11 @@
 
 (marker_op) @keyword
 
-(marker_spec (quoted_string) @string)
-
 ;; options
 
 (option) @function
 
-(global_opt "=" @operator)
-
-(global_opt (argument) @string.special)
+"=" @operator
 
 ;; punctuation
 
@@ -41,6 +37,8 @@
 ;; misc
 
 (env_var) @constant
+
+(quoted_string) @string
 
 (linebreak) @escape
 

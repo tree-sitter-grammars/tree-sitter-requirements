@@ -8,11 +8,11 @@
       "required": false,
       "types": [
         {
-          "type": "env_var",
+          "type": "quoted_string",
           "named": true
         },
         {
-          "type": "quoted_string",
+          "type": "url",
           "named": true
         }
       ]
@@ -166,11 +166,34 @@
           "named": true
         },
         {
+          "type": "requirement_opt",
+          "named": true
+        },
+        {
           "type": "url_spec",
           "named": true
         },
         {
           "type": "version_spec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "requirement_opt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "argument",
+          "named": true
+        },
+        {
+          "type": "option",
           "named": true
         }
       ]
@@ -207,11 +230,6 @@
     }
   },
   {
-    "type": "version_cmp",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "version_spec",
     "named": true,
     "fields": {},
@@ -229,10 +247,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "!=",
-    "named": false
   },
   {
     "type": "\"",
@@ -263,31 +277,7 @@
     "named": false
   },
   {
-    "type": "<",
-    "named": false
-  },
-  {
-    "type": "<=",
-    "named": false
-  },
-  {
     "type": "=",
-    "named": false
-  },
-  {
-    "type": "==",
-    "named": false
-  },
-  {
-    "type": "===",
-    "named": false
-  },
-  {
-    "type": ">",
-    "named": false
-  },
-  {
-    "type": ">=",
     "named": false
   },
   {
@@ -383,11 +373,11 @@
     "named": true
   },
   {
-    "type": "}",
-    "named": false
+    "type": "version_cmp",
+    "named": true
   },
   {
-    "type": "~=",
+    "type": "}",
     "named": false
   }
 ]
