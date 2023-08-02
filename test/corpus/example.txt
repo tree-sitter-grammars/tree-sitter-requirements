@@ -153,3 +153,16 @@ backports.ssl_match_hostname >= 3.4 ; python_version < '2.7.9' or (python_versio
       (marker_var)
       (version_cmp)
       (quoted_string))))
+
+================================================================================
+environment variables
+================================================================================
+
+git+https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/user/project.git
+
+--------------------------------------------------------------------------------
+
+(file
+  (url
+    (env_var)
+    (env_var)))

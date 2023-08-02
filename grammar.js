@@ -7,7 +7,7 @@
  * @see {@link https://peps.python.org/pep-0440/|version identification}
  * @see {@link https://pip.pypa.io/en/stable/topics/vcs-support/|VCS support}
  * @todo Support per-requirement options
- * @todo Support environment variables
+ * @todo Support environment variables everywhere
  */
 
 module.exports = grammar({
@@ -87,10 +87,11 @@ module.exports = grammar({
       $.url
     ),
 
-    // TODO: parse URL fields
-    url: _ => choice(
-      /[a-z+]*:\/\/\S+/i,
-      /bzr\+lp:\S+/i
+    url: $ => seq(
+      field('scheme', choice(
+        /[a-z+]+:\/\//i, /bzr\+lp:/i
+      )),
+      repeat1(choice($.env_var, /\S/)),
     ),
 
     version_spec: $ => choice(
@@ -234,14 +235,17 @@ module.exports = grammar({
     )),
 
     argument: $ => choice(
-      /(\S|\\ )+/,
-      $.quoted_string
+      repeat1(/(\S|\\ )/),
+      $.quoted_string,
+      $.env_var,
     ),
 
     quoted_string: _ => choice(
       seq('"', field('content', /([^"]|\\")+/), '"'),
       seq("'", field('content', /([^']|\\')+/), "'")
     ),
+
+    env_var: _ => seq('${', field('name', /[A-Z0-9_]+/), '}'),
 
     linebreak: $ => seq('\\', $._end_of_line),
 

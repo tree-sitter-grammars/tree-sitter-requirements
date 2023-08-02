@@ -8,11 +8,20 @@
       "required": false,
       "types": [
         {
+          "type": "env_var",
+          "named": true
+        },
+        {
           "type": "quoted_string",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "env_var",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "extras",
@@ -170,7 +179,17 @@
   {
     "type": "url",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "env_var",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "url_spec",
@@ -217,6 +236,10 @@
   },
   {
     "type": "\"",
+    "named": false
+  },
+  {
+    "type": "${",
     "named": false
   },
   {
@@ -358,6 +381,10 @@
   {
     "type": "version",
     "named": true
+  },
+  {
+    "type": "}",
+    "named": false
   },
   {
     "type": "~=",

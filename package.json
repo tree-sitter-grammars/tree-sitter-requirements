@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-requirements",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "description": "pip requirements grammar for tree-sitter",
   "repository": "ObserverOfTime/tree-sitter-requirements",

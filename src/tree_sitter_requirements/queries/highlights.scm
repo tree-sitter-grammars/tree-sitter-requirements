@@ -36,7 +36,11 @@
 
 [ "," ";" "@" ] @punctuation.delimiter
 
+[ "${" "}" ] @punctuation.special
+
 ;; misc
+
+(env_var) @constant
 
 (linebreak) @escape
 

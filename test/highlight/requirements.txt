@@ -38,3 +38,12 @@ urllib3 @ https://github.com/urllib3/urllib3/archive/refs/tags/1.26.8.zip
 
 http://wxpython.org/Phoenix/snapshot-builds/wxPython_Phoenix-3.0.3.dev1820+49a8884-cp34-none-win_amd64.whl
 # <- markup.link.url
+
+git+https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/user/project.git
+# <- markup.link.url
+#           ^^ punctuation.special
+#             ^^^^^^^^^^^ constant
+#                        ^ punctuation.special
+#                          ^^ punctuation.special
+#                            ^^^^^^^^^^^^ constant
+#                                        ^ punctuation.special
