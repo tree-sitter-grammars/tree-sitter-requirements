@@ -1,6 +1,6 @@
 [project]
 name = "tree-sitter-requirements"
-version = "0.1.2"
+version = "0.1.3"
 description = "A tree-sitter parser for requirements.txt files"
 keywords = ["tree-sitter", "parser", "lexer"]
 classifiers = [

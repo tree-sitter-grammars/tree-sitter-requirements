@@ -196,21 +196,7 @@ module.exports = grammar({
     global_opt: $ => prec.left(1, choice(
       seq(
         alias(
-          choice('-c', '-e', '-i', '-f', '-r'),
-          $.option
-        ),
-        optional($._space),
-        $.argument
-      ),
-      seq(
-        alias(
           choice(
-            '--index-url',
-            '--extra-index-url',
-            '--constraint',
-            '--requirement',
-            '--editable',
-            '--find-links',
             '--no-binary',
             '--only-binary',
             '--trusted-host',
@@ -219,7 +205,7 @@ module.exports = grammar({
           $.option
         ),
         choice('=', $._space),
-        $.argument
+        choice($.argument, $.quoted_string)
       ),
       alias(
         choice(
@@ -229,7 +215,78 @@ module.exports = grammar({
           '--pre'
         ),
         $.option
-      )
+      ),
+      seq(
+        alias(
+          choice('-i'),
+          $.option
+        ),
+        optional($._space),
+        choice($.url, $.quoted_string)
+      ),
+      seq(
+        alias(
+          choice(
+            '--index-url',
+            '--extra-index-url'
+          ),
+          $.option
+        ),
+        choice('=', $._space),
+        choice($.url, $.quoted_string)
+      ),
+      seq(
+        alias(
+          choice('-c', '-r'),
+          $.option
+        ),
+        optional($._space),
+        choice(
+          alias($.argument, $.path),
+          $.quoted_string
+        )
+      ),
+      seq(
+        alias(
+          choice(
+            '--constraint',
+            '--requirement'
+          ),
+          $.option
+        ),
+        choice('=', $._space),
+        choice(
+          alias($.argument, $.path),
+          $.quoted_string
+        )
+      ),
+      seq(
+        alias(
+          choice('-e', '-f'),
+          $.option
+        ),
+        optional($._space),
+        choice(
+          alias($.argument, $.path),
+          $.quoted_string,
+          $.url
+        )
+      ),
+      seq(
+        alias(
+          choice(
+            '--editable',
+            '--find-links'
+          ),
+          $.option
+        ),
+        choice('=', $._space),
+        choice(
+          alias($.argument, $.path),
+          $.quoted_string,
+          $.url
+        )
+      ),
     )),
 
     requirement_opt: $ => seq(
@@ -243,14 +300,10 @@ module.exports = grammar({
         $.option
       ),
       choice('=', $._space),
-      $.argument
+      choice($.argument, $.quoted_string)
     ),
 
-    argument: $ => choice(
-      repeat1(/(\S|\\ )/),
-      $.quoted_string,
-      $.url
-    ),
+    argument: _ => repeat1(/(\S|\\ )/),
 
     quoted_string: _ => choice(
       seq('"', field('content', /([^"]|\\")+/), '"'),

@@ -60,20 +60,21 @@ urllib3 @ https://github.com/urllib3/urllib3/archive/refs/tags/1.26.8.zip
 global options
 ================================================================================
 
-# It is possible to refer to other requirement files or constraints files.
--r other-requirements.txt
--c constraints.txt
+--no-index
+--find-links http://some.archives.com/archives
+-r more_requirements.txt
 
 --------------------------------------------------------------------------------
 
 (file
-  (comment)
+  (global_opt
+    (option))
   (global_opt
     (option)
-    (argument))
+    (url))
   (global_opt
     (option)
-    (argument)))
+    (path)))
 
 ================================================================================
 local paths
