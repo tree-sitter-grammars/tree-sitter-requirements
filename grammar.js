@@ -89,7 +89,8 @@ module.exports = grammar({
 
     url: $ => seq(
       field('scheme', choice(
-        /[a-z+]+:\/\//i, /bzr\+lp:/i
+        /[a-zA-Z+]+:\/\//,
+        /[bB][zZ][rR]\+[lL][pP]:/
       )),
       repeat1(choice($.env_var, /\S/)),
     ),

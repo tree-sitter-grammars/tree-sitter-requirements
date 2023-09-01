@@ -321,11 +321,11 @@
             "members": [
               {
                 "type": "PATTERN",
-                "value": "[a-z+]+:\\/\\/"
+                "value": "[a-zA-Z+]+:\\/\\/"
               },
               {
                 "type": "PATTERN",
-                "value": "bzr\\+lp:"
+                "value": "[bB][zZ][rR]\\+[lL][pP]:"
               }
             ]
           }
