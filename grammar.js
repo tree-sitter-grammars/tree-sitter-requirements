@@ -19,11 +19,6 @@ module.exports = grammar({
     $._end_of_line
   ],
 
-  // FIXME: resolve the conflict
-  conflicts: $ => [
-    [$._version_list, $._version_list]
-  ],
-
   word: $ => $.package,
 
   rules: {
@@ -96,14 +91,10 @@ module.exports = grammar({
     ),
 
     version_spec: $ => choice(
-      seq(
-        optional($._space),
-        $._version_list
-      ),
+      $._version_list,
       seq(
         optional($._space),
         '(',
-        optional($._space),
         $._version_list,
         optional($._space),
         ')'
