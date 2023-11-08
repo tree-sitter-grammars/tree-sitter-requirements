@@ -11,3 +11,4 @@ target/
 *.wasm
 *.dll
 *.so
+*.o

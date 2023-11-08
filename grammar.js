@@ -19,6 +19,11 @@ module.exports = grammar({
     $._end_of_line
   ],
 
+  conflicts: $ => [
+    // FIXME: prec.right breaks inline comments
+    [$.requirement],
+  ],
+
   word: $ => $.package,
 
   rules: {
@@ -42,7 +47,7 @@ module.exports = grammar({
       )
     ),
 
-    requirement: $ => prec.right(seq(
+    requirement: $ => seq(
       $.package,
       optional($.extras),
       optional(choice(
@@ -51,7 +56,7 @@ module.exports = grammar({
       )),
       optional($.marker_spec),
       repeat($.requirement_opt)
-    )),
+    ),
 
     package: _ => /[a-zA-Z0-9]([a-zA-Z0-9._-]*[a-zA-Z0-9])?/,
 
@@ -170,12 +175,12 @@ module.exports = grammar({
     )),
 
     _marker_and: $ => prec.left(seq(
-        $._marker,
-        optional($._space),
-        alias('and', $.marker_op),
-        optional($._space),
-        $._marker
-      )),
+      $._marker,
+      optional($._space),
+      alias('and', $.marker_op),
+      optional($._space),
+      $._marker
+    )),
 
     _marker_or: $ => prec.left(seq(
       $._marker,
