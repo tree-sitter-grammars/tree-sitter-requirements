@@ -2,11 +2,7 @@
  * @file Tree-sitter grammar definition
  * @author ObserverOfTime
  * @license MIT
- * @see {@link https://pip.pypa.io/en/stable/reference/requirements-file-format/|file format}
- * @see {@link https://peps.python.org/pep-0508/|dependency specification}
- * @see {@link https://peps.python.org/pep-0440/|version identification}
- * @see {@link https://pip.pypa.io/en/stable/topics/vcs-support/|VCS support}
- * @todo Support environment variables everywhere
+ * @todo Support environment variables anywhere
  */
 
 module.exports = grammar({
