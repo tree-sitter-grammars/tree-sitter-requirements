@@ -12,9 +12,9 @@ jobs:
       matrix:
         os: [ubuntu-20.04, windows-2019, macos-11]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout repository
-      - uses: pypa/cibuildwheel@v2.14.1
+      - uses: pypa/cibuildwheel@v2.16.2
         name: Build wheels
         with:
           output-dir: dist
@@ -27,13 +27,16 @@ jobs:
     name: Upload wheels to PyPI
     needs: [build_wheels]
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/tree-sitter-requirements/
+    permissions:
+      id-token: write
     steps:
       - uses: actions/download-artifact@v3
         name: Download wheel artifacts
         with:
           name: artifact
           path: dist
-      - uses: pypa/gh-action-pypi-publish@v1.8.8
+      - uses: pypa/gh-action-pypi-publish@v1.8.10
         name: Publish to PyPI
-        with:
-          password: ${{secrets.PYPI_TOKEN}}
