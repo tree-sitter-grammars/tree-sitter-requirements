@@ -2,37 +2,34 @@ name: Test grammar & Python package
 
 on:
   push:
-    branches: [master]
+    branches: ["*"]
+    paths:
+      - grammar.js
+      - src/**
+      - bindings/**
+      - binding.gyp
   pull_request:
-    branches: [master]
+    branches: ["*"]
+    paths:
+      - grammar.js
+      - src/**
+      - bindings/**
+      - binding.gyp
 
 jobs:
   test-grammar:
-    runs-on: ubuntu-latest
-    name: Test the grammar
-    steps:
-      - uses: actions/checkout@v4
-        name: Checkout repository
-      - uses: actions/setup-node@v4
-        name: Set up NodeJS
-        with:
-          node-version: 18
-      - run: npm install
-        name: Install dependencies
-      - run: npm test
-        name: Run tests
-
+    uses: tree-sitter-grammars/.github/.github/workflows/ci.yml@main
   test-package:
-    runs-on: ubuntu-latest
     name: Test the Python package
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        name: Checkout repository
-      - uses: actions/setup-python@v4
-        name: Set up Python
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
-      - run: pip install -e .
-        name: Install dependencies
-      - run: test/test_package.py
-        name: Run tests
+      - name: Install dependencies
+        run: pip install -e .
+      - name: Run tests
+        run: test/test_package.py

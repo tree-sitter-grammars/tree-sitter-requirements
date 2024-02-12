@@ -2,9 +2,7 @@
 tree-sitter-requirements
 ========================
 
-.. image:: https://badgen.net/github/checks/ObserverOfTime/tree-sitter-requirements?label=CI&icon=github
-   :target: https://github.com/ObserverOfTime/tree-sitter-requirements/actions/workflows/ci.yml
-   :alt: CI
+|CI| |discord| |matrix| |pypi|
 
 A tree-sitter parser for pip requirements files.
 
@@ -51,6 +49,7 @@ Editors
 | |c| Neovim
 | |u| Helix
 | |u| Emacs
+| |u| Zed
 
 .. |u| unicode:: U+00A0 U+00A0 U+2610
 .. |c| unicode:: U+00A0 U+00A0 U+2611
@@ -58,6 +57,11 @@ Editors
 
 Changelog
 ---------
+
+v0.2.0
+^^^^^^
+
+* Move to ``tree-sitter-grammars`` org
 
 v0.1.5
 ^^^^^^
@@ -85,3 +89,19 @@ v0.1.1
 ^^^^^^
 
 * Fix environment markers
+
+.. |CI| image:: https://img.shields.io/github/actions/workflow/status/tree-sitter-grammars/tree-sitter-requirements/test.yml?logo=github&label=CI
+   :target: https://github.com/tree-sitter-grammars/tree-sitter-requirements/actions/workflows/test.yml
+   :alt: CI
+
+.. |discord| image:: https://img.shields.io/discord/1063097320771698699?logo=discord&label=tree-sitter
+   :target: https://discord.gg/w7nTvsVJhm
+   :alt: discord
+
+.. |matrix| image:: https://img.shields.io/matrix/nvim-treesitter%3Amatrix.org?logo=matrix&label=nvim-treesitter
+   :target: https://matrix.to/#/#nvim-treesitter:matrix.org
+   :alt: matrix
+
+.. |pypi| image:: https://img.shields.io/pypi/v/tree-sitter-requirements?logo=pypi&logoColor=ffd242
+   :target: https://pypi.org/project/tree-sitter-requirements/
+   :alt: pypi

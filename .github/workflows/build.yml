@@ -2,41 +2,10 @@ name: Build and upload to PyPI
 
 on:
   push:
-    tags: ['*']
+    tags: ["*"]
 
 jobs:
-  build_wheels:
-    name: Build on ${{matrix.os}}
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-20.04, windows-2019, macos-11]
-    steps:
-      - uses: actions/checkout@v4
-        name: Checkout repository
-      - uses: pypa/cibuildwheel@v2.16.2
-        name: Build wheels
-        with:
-          output-dir: dist
-      - uses: actions/upload-artifact@v3
-        name: Upload wheel artifacts
-        with:
-          path: dist/*.whl
-
-  upload_pypi:
-    name: Upload wheels to PyPI
-    needs: [build_wheels]
-    runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: https://pypi.org/project/tree-sitter-requirements/
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/download-artifact@v3
-        name: Download wheel artifacts
-        with:
-          name: artifact
-          path: dist
-      - uses: pypa/gh-action-pypi-publish@v1.8.10
-        name: Publish to PyPI
+  pypi:
+    uses: tree-sitter-grammars/.github/.github/workflows/package-pypi.yml@main
+    secrets:
+      PYPI_API_TOKEN: ${{secrets.PYPI_TOKEN}}

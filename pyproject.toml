@@ -1,6 +1,6 @@
 [project]
 name = "tree-sitter-requirements"
-version = "0.1.5"
+version = "0.2.0"
 description = "A tree-sitter parser for requirements.txt files"
 keywords = ["tree-sitter", "parser", "lexer"]
 classifiers = [
@@ -20,8 +20,8 @@ file = "README.rst"
 content-type = "text/x-rst"
 
 [project.urls]
-Homepage = "https://github.com/ObserverOfTime/tree-sitter-requirements"
-Issues = "https://github.com/ObserverOfTime/tree-sitter-requirements/issues"
+Homepage = "https://github.com/tree-sitter-grammars/tree-sitter-requirements"
+Issues = "https://github.com/tree-sitter-grammars/tree-sitter-requirements/issues"
 Sponsor = "https://github.com/sponsors/ObserverOfTime"
 
 [[project.authors]]

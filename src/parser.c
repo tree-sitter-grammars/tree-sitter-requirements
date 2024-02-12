@@ -1,4 +1,4 @@
-#include <tree_sitter/parser.h>
+#include "tree_sitter/parser.h"
 
 #if defined(__GNUC__) || defined(__clang__)
 #pragma GCC diagnostic push
@@ -16,7 +16,7 @@
 #define MAX_ALIAS_SEQUENCE_LENGTH 8
 #define PRODUCTION_ID_COUNT 6
 
-enum {
+enum ts_symbol_identifiers {
   sym_package = 1,
   aux_sym_file_token1 = 2,
   aux_sym_file_token2 = 3,
@@ -692,7 +692,7 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
   },
 };
 
-enum {
+enum ts_field_identifiers {
   field_content = 1,
   field_name = 2,
   field_scheme = 3,
@@ -997,7 +997,9 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (('0' <= lookahead && lookahead <= '9') ||
           ('A' <= lookahead && lookahead <= 'Z') ||
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(179);
-      if (lookahead != 0) ADVANCE(186);
+      if (lookahead != 0 &&
+          lookahead != 11 &&
+          lookahead != '\f') ADVANCE(186);
       END_STATE();
     case 1:
       if (lookahead == '\n') ADVANCE(173);
@@ -1011,7 +1013,9 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '\\') ADVANCE(231);
       if (lookahead == '\t' ||
           lookahead == ' ') ADVANCE(236);
-      if (lookahead != 0) ADVANCE(186);
+      if (lookahead != 0 &&
+          lookahead != 11 &&
+          lookahead != '\f') ADVANCE(186);
       END_STATE();
     case 3:
       if (lookahead == '\n') ADVANCE(173);
@@ -1020,7 +1024,9 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '\\') ADVANCE(231);
       if (lookahead == '\t' ||
           lookahead == ' ') ADVANCE(236);
-      if (lookahead != 0) ADVANCE(186);
+      if (lookahead != 0 &&
+          lookahead != 11 &&
+          lookahead != '\f') ADVANCE(186);
       END_STATE();
     case 4:
       if (lookahead == '\n') ADVANCE(173);
@@ -1029,7 +1035,9 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '\\') ADVANCE(232);
       if (lookahead == '\t' ||
           lookahead == ' ') ADVANCE(236);
-      if (lookahead != 0) ADVANCE(218);
+      if (lookahead != 0 &&
+          lookahead != 11 &&
+          lookahead != '\f') ADVANCE(218);
       END_STATE();
     case 5:
       if (lookahead == '\n') ADVANCE(173);
@@ -1037,7 +1045,9 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '\\') ADVANCE(232);
       if (lookahead == '\t' ||
           lookahead == ' ') ADVANCE(236);
-      if (lookahead != 0) ADVANCE(218);
+      if (lookahead != 0 &&
+          lookahead != 11 &&
+          lookahead != '\f') ADVANCE(218);
       END_STATE();
     case 6:
       if (lookahead == '"') ADVANCE(222);
@@ -1051,8 +1061,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           ('A' <= lookahead && lookahead <= 'Z') ||
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(221);
       if (lookahead != 0 &&
-          lookahead != '\n' &&
-          lookahead != '\r') ADVANCE(218);
+          (lookahead < '\n' || '\r' < lookahead)) ADVANCE(218);
       END_STATE();
     case 7:
       if (lookahead == '"') ADVANCE(222);
@@ -1061,8 +1070,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '\t' ||
           lookahead == ' ') ADVANCE(236);
       if (lookahead != 0 &&
-          lookahead != '\n' &&
-          lookahead != '\r') ADVANCE(218);
+          (lookahead < '\n' || '\r' < lookahead)) ADVANCE(218);
       END_STATE();
     case 8:
       if (lookahead == '+') ADVANCE(24);
@@ -1665,9 +1673,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
     case 174:
       ACCEPT_TOKEN(aux_sym_file_token2);
       if (lookahead != 0 &&
-          lookahead != '\t' &&
-          lookahead != '\n' &&
-          lookahead != '\r' &&
+          (lookahead < '\t' || '\r' < lookahead) &&
           lookahead != ' ') ADVANCE(174);
       END_STATE();
     case 175:
