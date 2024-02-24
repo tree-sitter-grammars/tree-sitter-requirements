@@ -1,24 +1,41 @@
-name: Test grammar & Python package
+name: CI
 
 on:
   push:
-    branches: ["*"]
+    branches: [master]
     paths:
       - grammar.js
       - src/**
+      - test/**
       - bindings/**
       - binding.gyp
   pull_request:
-    branches: ["*"]
     paths:
       - grammar.js
       - src/**
+      - test/**
       - bindings/**
       - binding.gyp
 
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
+
 jobs:
-  test-grammar:
-    uses: tree-sitter-grammars/.github/.github/workflows/ci.yml@main
+  test-parser:
+    name: Test the parser
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-14]
+    steps:
+      - name: Set up repository
+        uses: tree-sitter-grammars/actions/setup@main
+        with:
+          node-version: ${{vars.NODE_VERSION}}
+      - name: Run tests
+        uses: tree-sitter-grammars/actions/test@main
   test-package:
     name: Test the Python package
     runs-on: ubuntu-latest
@@ -28,7 +45,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: ${{vars.PYTHON_VERSION}}
       - name: Install dependencies
         run: pip install -e .
       - name: Run tests

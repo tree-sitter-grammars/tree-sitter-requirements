@@ -1,8 +1,8 @@
 ;; packages
 
-(extras (package) @variable.parameter)
-
 (package) @variable
+
+(extras (package) @variable.parameter)
 
 (path) @markup.link
 
@@ -41,7 +41,5 @@
 (quoted_string) @string
 
 (linebreak) @escape
-
-(ERROR) @error
 
 (comment) @comment

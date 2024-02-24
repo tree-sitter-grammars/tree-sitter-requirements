@@ -1,8 +1,4 @@
-* text=auto
+* text eol=lf
 
 src/** linguist-generated
-bindings/** linguist-generated
-binding.gyp linguist-generated
-Cargo.toml linguist-generated
-
 src/tree_sitter_requirements/** -linguist-generated
