@@ -1,8 +1,14 @@
 from pathlib import PurePath
-from pkg_resources import resource_filename
 from sys import platform
 
 from tree_sitter import Language, Parser
+
+try:
+    from importlib.resources import files
+    _highlights = (files(__package__) / 'queries' / 'highlights.scm').read_text()
+except ImportError:
+    from importlib.resources import read_text
+    _highlights = read_text(__package__ + '.queries', 'highlights.scm')
 
 _language = Language(
     PurePath(__file__).with_name('requirements').with_suffix(
@@ -26,6 +32,4 @@ def query(query, node):
 
 def highlights(tree):
     """Return the highlight groups for the given source tree"""
-    res = resource_filename(__package__, 'queries/highlights.scm')
-    with open(res, 'r') as hl:
-        return query(hl.read(), tree.root_node)
+    return query(_highlights, tree.root_node)

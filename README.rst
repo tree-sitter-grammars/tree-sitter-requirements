@@ -58,6 +58,11 @@ Editors
 Changelog
 ---------
 
+v0.3.1
+^^^^^^
+
+* Replace deprecated resource API
+
 v0.3.0
 ^^^^^^
 
