@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-requirements",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "license": "MIT",
   "description": "pip requirements grammar for tree-sitter",
   "repository": "tree-sitter-grammars/tree-sitter-requirements",
@@ -30,7 +30,7 @@
   "tree-sitter": [
     {
       "scope": "source.requirements",
-      "highlights": "src/tree_sitter_requirements/queries/highlights.scm",
+      "highlights": "queries/highlights.scm",
       "file-types": [
         "requirements.txt",
         "pip"

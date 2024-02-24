@@ -43,10 +43,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{vars.PYTHON_VERSION}}
       - name: Install dependencies
-        run: pip install -e .
+        run: pip install .
       - name: Run tests
         run: test/test_package.py

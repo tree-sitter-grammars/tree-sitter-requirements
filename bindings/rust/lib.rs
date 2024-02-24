@@ -38,7 +38,7 @@ pub fn language() -> Language {
 pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
 /// The syntax highlighting queries.
-pub const HIGHLIGHTS_QUERY: &str = include_str!("../../src/tree_sitter_requirements/queries/highlights.scm");
+pub const HIGHLIGHTS_QUERY: &str = include_str!("../../queries/highlights.scm");
 
 #[cfg(test)]
 mod tests {

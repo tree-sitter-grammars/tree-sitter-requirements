@@ -5,8 +5,9 @@ from sys import platform
 from tree_sitter import Language, Parser
 
 _language = Language(
-    PurePath(__file__).with_name('requirements') \
-        .with_suffix('.dll' if platform == 'win32' else '.so'),
+    PurePath(__file__).with_name('requirements').with_suffix(
+        {'win32': '.dll', 'darwin': '.dylib'}.get(platform, '.so')
+    ),
     'requirements'
 )
 

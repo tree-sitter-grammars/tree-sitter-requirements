@@ -1,4 +1,3 @@
 * text eol=lf
 
 src/** linguist-generated
-src/tree_sitter_requirements/** -linguist-generated

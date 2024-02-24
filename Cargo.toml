@@ -1,7 +1,7 @@
 [package]
 name = "tree-sitter-requirements"
 description = "requirements grammar for the tree-sitter parsing library"
-version = "0.2.1"
+version = "0.3.0"
 keywords = ["incremental", "parsing", "requirements"]
 categories = ["parsing", "text-editors"]
 repository = "https://github.com/tree-sitter-grammars/tree-sitter-requirements"
@@ -12,11 +12,8 @@ build = "bindings/rust/build.rs"
 include = [
   "bindings/rust/*",
   "grammar.js",
-  "src/parser.c",
-  "src/grammar.json",
-  "src/node-types.json",
-  "src/tree_sitter/*",
-  "src/tree_sitter_requirements/queries/*",
+  "src/*",
+  "queries/*",
 ]
 
 [lib]

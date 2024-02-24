@@ -58,6 +58,11 @@ Editors
 Changelog
 ---------
 
+v0.3.0
+^^^^^^
+
+* Change bindings layout
+
 v0.2.0
 ^^^^^^
 
