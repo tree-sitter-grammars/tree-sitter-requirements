@@ -6,6 +6,6 @@ on:
 
 jobs:
   pypi:
-    uses: tree-sitter-grammars/.github/.github/workflows/package-pypi.yml@main
+    uses: tree-sitter/workflows/.github/workflows/package-pypi.yml@main
     secrets:
       PYPI_API_TOKEN: ${{secrets.PYPI_TOKEN}}
