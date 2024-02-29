@@ -58,6 +58,11 @@ Editors
 Changelog
 ---------
 
+v0.3.2
+^^^^^^
+
+* Fix platform detection code
+
 v0.3.1
 ^^^^^^
 

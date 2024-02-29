@@ -36,6 +36,8 @@ jobs:
           node-version: ${{vars.NODE_VERSION}}
       - name: Run tests
         uses: tree-sitter/parser-test-action@v1.2
+        with:
+          test-library: ${{runner.os == 'Linux'}}
   test-package:
     name: Test the Python package
     runs-on: ubuntu-latest

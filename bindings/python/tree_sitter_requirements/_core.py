@@ -1,5 +1,5 @@
 from pathlib import PurePath
-from sys import platform
+from platform import system
 
 from tree_sitter import Language, Parser
 
@@ -12,7 +12,7 @@ except ImportError:
 
 _language = Language(
     PurePath(__file__).with_name('requirements').with_suffix(
-        {'win32': '.dll', 'darwin': '.dylib'}.get(platform, '.so')
+        {'Windows': '.dll', 'Darwin': '.dylib'}.get(system(), '.so')
     ),
     'requirements'
 )
