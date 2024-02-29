@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from pathlib import PurePath as Path
+from platform import system
 
 from setuptools import Extension, setup
 from setuptools.command.build import build
@@ -26,9 +27,10 @@ class BuildExt(build_ext):
         self.copy_file(str(self._ts_lib), str(lib_file))
 
     def build_extension(self, _):
+        ext = {'Windows': '.dll', 'Darwin': '.dylib'}.get(system(), '.so')
+        self.compiler.shared_lib_extension = ext
         self._ts_lib = Path(self.build_lib).joinpath(
-            'tree_sitter_requirements',
-            'requirements' + self.compiler.shared_lib_extension
+            'tree_sitter_requirements', 'requirements' + ext
         )
         Language.build_library(str(self._ts_lib), [''])
 

@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-requirements",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "license": "MIT",
   "description": "pip requirements grammar for tree-sitter",
   "repository": "tree-sitter-grammars/tree-sitter-requirements",

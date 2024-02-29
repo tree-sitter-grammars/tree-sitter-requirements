@@ -58,6 +58,11 @@ Editors
 Changelog
 ---------
 
+v0.3.3
+^^^^^^
+
+* Fix library compilation
+
 v0.3.2
 ^^^^^^
 
