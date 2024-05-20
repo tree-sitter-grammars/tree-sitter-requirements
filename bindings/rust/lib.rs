@@ -9,7 +9,8 @@
 //! pip @ https://github.com/pypa/pip/archive/1.3.1.zip#sha1=da9234ee9982d4bbb3c72346a6de940a148ea686
 //! "#;
 //! let mut parser = tree_sitter::Parser::new();
-//! parser.set_language(tree_sitter_requirements::language()).expect("Error loading requirements grammar");
+//! let language = tree_sitter_requirements::language();
+//! parser.set_language(&language).expect("Error loading pip requirements grammar");
 //! let tree = parser.parse(code, None).unwrap();
 //! assert!(!tree.root_node().has_error());
 //! ```
@@ -46,7 +47,7 @@ mod tests {
     fn test_can_load_grammar() {
         let mut parser = tree_sitter::Parser::new();
         parser
-            .set_language(super::language())
-            .expect("Error loading requirements language");
+            .set_language(&super::language())
+            .expect("Error loading pip requirements grammar");
     }
 }

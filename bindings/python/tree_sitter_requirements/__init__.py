@@ -1,9 +1,30 @@
-"""pip requirements parser"""
+"""pip requirements grammar for tree-sitter"""
 
-from ._core import parse, query, highlights
+from importlib.resources import files as _files
 
-__author__ = 'ObserverOfTime'
-__version__ = '0.3.1'
-__license__ = 'MIT'
+from ._binding import language
 
-__all__ = ['parse', 'query', 'highlights']
+
+def _get_query(name, file):
+    query = _files(f"{__package__}.queries") / file
+    globals()[name] = query.read_text()
+    return globals()[name]
+
+
+def __getattr__(name):
+    if name == "HIGHLIGHTS_QUERY":
+        return _get_query("HIGHLIGHTS_QUERY", "highlights.scm")
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+__all__ = [
+    "language",
+    "HIGHLIGHTS_QUERY",
+]
+
+
+def __dir__():
+    return sorted(__all__ + [
+        "__all__", "__builtins__", "__cached__", "__doc__", "__file__",
+        "__loader__", "__name__", "__package__", "__path__", "__spec__",
+    ])

@@ -1,64 +1,61 @@
-#!/usr/bin/env python3
-
-from pathlib import PurePath as Path
+from os.path import isdir, join
 from platform import system
 
-from setuptools import Extension, setup
+from setuptools import Extension, find_packages, setup
 from setuptools.command.build import build
-from setuptools.command.build_ext import build_ext
 from wheel.bdist_wheel import bdist_wheel
 
-from tree_sitter import Language
 
 class Build(build):
     def run(self):
-        source = Path(__file__).with_name('queries')
-        dest = Path(self.build_lib) / 'tree_sitter_requirements' / 'queries'
-        self.copy_tree(str(source), str(dest))
+        if isdir("queries"):
+            dest = join(self.build_lib, "tree_sitter_requirements", "queries")
+            self.copy_tree("queries", dest)
         super().run()
-
-class BuildExt(build_ext):
-    def copy_extensions_to_source(self):
-        lib_file = Path(__file__).parent.joinpath(
-            'bindings', 'python',
-            'tree_sitter_requirements',
-            self._ts_lib.name
-        )
-        self.copy_file(str(self._ts_lib), str(lib_file))
-
-    def build_extension(self, _):
-        ext = {'Windows': '.dll', 'Darwin': '.dylib'}.get(system(), '.so')
-        self.compiler.shared_lib_extension = ext
-        self._ts_lib = Path(self.build_lib).joinpath(
-            'tree_sitter_requirements', 'requirements' + ext
-        )
-        Language.build_library(str(self._ts_lib), [''])
 
 
 class BdistWheel(bdist_wheel):
     def get_tag(self):
         python, abi, platform = super().get_tag()
-        if python.startswith('cp'):
-            python, abi = 'cp38', 'abi3'
+        if python.startswith("cp"):
+            python, abi = "cp39", "abi3"
         return python, abi, platform
 
 
 setup(
-    packages=['tree_sitter_requirements'],
-    package_dir={'': 'bindings/python'},
+    packages=find_packages("bindings/python"),
+    package_dir={"": "bindings/python"},
     package_data={
-        'tree_sitter_requirements.queries': ['*.scm']
+        "tree_sitter_requirements": ["*.pyi", "py.typed"],
+        "tree_sitter_requirements.queries": ["*.scm"],
     },
+    ext_package="tree_sitter_requirements",
     ext_modules=[
         Extension(
-            name='tree_sitter_requirements',
-            sources=['requirements'],
-            py_limited_api=True
+            name="_binding",
+            sources=[
+                "bindings/python/tree_sitter_requirements/binding.c",
+                "src/parser.c",
+            ],
+            extra_compile_args=[
+                "-std=c11",
+                "-fvisibility=hidden",
+            ] if system() != "Windows" else [
+                "/std:c11",
+                "/utf-8",
+            ],
+            define_macros=[
+                ("Py_LIMITED_API", "0x03090000"),
+                ("PY_SSIZE_T_CLEAN", None),
+                ("TREE_SITTER_HIDE_SYMBOLS", None),
+            ],
+            include_dirs=["src"],
+            py_limited_api=True,
         )
     ],
     cmdclass={
-        'bdist_wheel': BdistWheel,
-        'build_ext': BuildExt,
-        'build': Build
-    }
+        "build": Build,
+        "bdist_wheel": BdistWheel
+    },
+    zip_safe=False
 )

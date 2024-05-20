@@ -58,6 +58,13 @@ Editors
 Changelog
 ---------
 
+v0.4.0
+^^^^^^
+
+* Update bindings
+* Remove custom functions
+* Drop Python 3.8 support
+
 v0.3.3
 ^^^^^^
 

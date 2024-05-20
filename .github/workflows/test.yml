@@ -22,33 +22,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test-parser:
-    name: Test the parser
+  test:
+    name: Test parser
     runs-on: ${{matrix.os}}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-14]
     steps:
-      - name: Set up repository
-        uses: tree-sitter/parser-setup-action@v1.1
-        with:
-          node-version: ${{vars.NODE_VERSION}}
-      - name: Run tests
-        uses: tree-sitter/parser-test-action@v1.2
-        with:
-          test-library: ${{runner.os == 'Linux'}}
-  test-package:
-    name: Test the Python package
-    runs-on: ubuntu-latest
-    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up tree-sitter
+        uses: tree-sitter/setup-action/cli@v1
+      - name: Run parser and binding tests
+        uses: tree-sitter/parser-test-action@v2
         with:
-          python-version: ${{vars.PYTHON_VERSION}}
-      - name: Install dependencies
-        run: pip install .
-      - name: Run tests
-        run: test/test_package.py
+          test-python: true
+          test-rust: ${{runner.os == 'Linux'}}
