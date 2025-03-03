@@ -31,7 +31,7 @@ Editors
 | |c| Neovim
 | |u| Helix
 | |u| Emacs
-| |u| Zed
+| |c| Zed
 
 .. |u| unicode:: U+00A0 U+00A0 U+2610
 .. |c| unicode:: U+00A0 U+00A0 U+2611
