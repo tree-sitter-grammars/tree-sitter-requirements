@@ -4,7 +4,7 @@ endif
 
 LANGUAGE_NAME := tree-sitter-requirements
 HOMEPAGE_URL := https://github.com/tree-sitter-grammars/tree-sitter-requirements
-VERSION := 0.4.0
+VERSION := 0.5.0
 
 # repository
 SRC_DIR := src

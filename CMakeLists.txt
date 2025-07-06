@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(tree-sitter-requirements
-        VERSION "0.4.0"
+        VERSION "0.5.0"
         DESCRIPTION "pip requirements grammar for tree-sitter"
         HOMEPAGE_URL "https://github.com/tree-sitter-grammars/tree-sitter-requirements"
         LANGUAGES C)
