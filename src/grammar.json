@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "requirements",
   "word": "package",
   "rules": {
@@ -970,13 +971,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "-i"
-                    }
-                  ]
+                  "type": "STRING",
+                  "value": "-i"
                 },
                 "named": true,
                 "value": "option"
@@ -1511,5 +1507,6 @@
     "_package_list",
     "_end_of_line"
   ],
-  "supertypes": []
+  "supertypes": [],
+  "reserved": {}
 }
