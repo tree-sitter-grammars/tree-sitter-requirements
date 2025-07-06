@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+  push:
+    tags: ["*"]
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  github:
+    name: Deploy to GitHub
+    uses: tree-sitter/workflows/.github/workflows/release.yml@main
+    with:
+      attestations: true
+  pypi:
+    name: Deploy to PyPI
+    uses: tree-sitter/workflows/.github/workflows/package-pypi.yml@main
+    secrets:
+      PYPI_API_TOKEN: ${{secrets.PYPI_TOKEN}}
