@@ -214,7 +214,7 @@ module.exports = grammar({
       ),
       seq(
         alias(
-          choice('-i'),
+          '-i',
           $.option
         ),
         optional($._space),
