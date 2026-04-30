@@ -2,7 +2,7 @@
 tree-sitter-requirements
 ========================
 
-|CI| |discord| |matrix| |pypi|
+|CI| |discord| |matrix| |pypi| |npm| |crates|
 
 A tree-sitter parser for pip requirements files.
 
@@ -39,6 +39,11 @@ Editors
 
 Changelog
 ---------
+
+v0.6.0
+^^^^^^
+* Update bindings
+* Upgrade tree-sitter ABI
 
 v0.5.0
 ^^^^^^
@@ -120,3 +125,11 @@ v0.1.1
 .. |pypi| image:: https://img.shields.io/pypi/v/tree-sitter-requirements?logo=pypi&logoColor=ffd242
    :target: https://pypi.org/project/tree-sitter-requirements/
    :alt: pypi
+
+.. |npm| image:: https://img.shields.io/npm/v/tree-sitter-requirements?logo=npm
+   :target: https://www.npmjs.com/package/tree-sitter-requirements
+   :alt: npm
+
+.. |crates| image:: https://img.shields.io/crates/v/tree-sitter-requirements?logo=rust
+   :target: https://crates.io/crates/tree-sitter-requirements
+   :alt: crates
