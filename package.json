@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-requirements",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "pip requirements grammar for tree-sitter",
   "type": "module",
   "repository": {

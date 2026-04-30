@@ -40,7 +40,7 @@ Editors
 Changelog
 ---------
 
-v0.6.0
+v0.6.1
 ^^^^^^
 * Update bindings
 * Upgrade tree-sitter ABI

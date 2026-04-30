@@ -1,6 +1,6 @@
 LANGUAGE_NAME := tree-sitter-requirements
 HOMEPAGE_URL := https://github.com/tree-sitter-grammars/tree-sitter-requirements
-VERSION := 0.6.0
+VERSION := 0.6.1
 
 # repository
 SRC_DIR := src

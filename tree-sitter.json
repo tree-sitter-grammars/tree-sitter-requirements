@@ -14,7 +14,7 @@
     }
   ],
   "metadata": {
-    "version": "0.6.0",
+    "version": "0.6.1",
     "description": "pip requirements grammar for tree-sitter",
     "authors": [
       {
