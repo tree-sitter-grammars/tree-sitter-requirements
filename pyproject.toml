@@ -5,27 +5,21 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tree-sitter-requirements"
 description = "pip requirements grammar for tree-sitter"
-version = "0.5.0"
+version = "0.6.0"
 keywords = ["incremental", "parsing", "tree-sitter", "requirements"]
 classifiers = [
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Topic :: Software Development :: Compilers",
   "Topic :: Text Processing :: Linguistic",
   "Typing :: Typed",
 ]
+authors = [{ name = "ObserverOfTime", email = "chronobserver@disroot.org" }]
 requires-python = ">=3.10"
 license.text = "MIT"
 readme = "README.rst"
 
 [project.urls]
 Homepage = "https://github.com/tree-sitter-grammars/tree-sitter-requirements"
-Issues = "https://github.com/tree-sitter-grammars/tree-sitter-requirements/issues"
-Sponsor = "https://github.com/sponsors/ObserverOfTime"
-
-[[project.authors]]
-name = "ObserverOfTime"
-email = "chronobserver@disroot.org"
 
 [project.optional-dependencies]
 core = ["tree-sitter~=0.24"]
