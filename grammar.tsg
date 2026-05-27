@@ -1,0 +1,233 @@
+// requirements grammar for tree-sitter (native DSL).
+// Translated from grammar.js.
+
+grammar {
+    language: "requirements",
+    extras: [linebreak],
+    inline: [_package_list, _end_of_line],
+    conflicts: [[requirement]],
+    word: package,
+}
+
+rule file {
+    repeat(choice(
+        seq(optional(_space), optional(comment), regexp(r"\r?\n")),
+        seq(
+            optional(_space),
+            choice(
+                requirement,
+                url,
+                alias(regexp(r"[./]\S*"), path),
+                global_opt,
+            ),
+            _end_of_line,
+        ),
+    ))
+}
+
+rule requirement {
+    seq(
+        package,
+        optional(extras),
+        optional(choice(version_spec, url_spec)),
+        optional(marker_spec),
+        repeat(requirement_opt),
+    )
+}
+
+rule package {
+    regexp(r"[a-zA-Z0-9]([a-zA-Z0-9._-]*[a-zA-Z0-9])?")
+}
+
+rule extras {
+    seq(
+        optional(_space),
+        "[",
+        optional(_space),
+        _package_list,
+        optional(_space),
+        "]",
+    )
+}
+
+rule _package_list {
+    seq(
+        optional(_space),
+        package,
+        repeat(seq(optional(_space), ",", optional(_space), package)),
+    )
+}
+
+rule url_spec {
+    seq(optional(_space), "@", optional(_space), url)
+}
+
+rule url {
+    seq(
+        field(scheme, choice(
+            regexp(r"[a-zA-Z+]+:\/\/"),
+            regexp(r"[bB][zZ][rR]\+[lL][pP]:"),
+        )),
+        repeat1(choice(env_var, regexp(r"\S"))),
+    )
+}
+
+rule version_spec {
+    choice(
+        _version_list,
+        seq(optional(_space), "(", _version_list, optional(_space), ")"),
+    )
+}
+
+rule _version_list {
+    prec_left(0, seq(
+        optional(_space),
+        version_cmp,
+        optional(_space),
+        version,
+        repeat(seq(
+            optional(_space), ",", optional(_space),
+            version_cmp, optional(_space), version,
+        )),
+    ))
+}
+
+rule version { regexp(r"[a-zA-Z0-9*!+._-]+") }
+
+rule version_cmp {
+    token(choice("<", "<=", "!=", "==", ">=", ">", "!=", "===", "~="))
+}
+
+rule marker_spec {
+    prec_right(0, seq(optional(_space), ";", optional(_space), _marker))
+}
+
+rule marker_op { choice("in", seq("not", _space, "in")) }
+
+rule marker_var {
+    choice(
+        "python_version", "python_full_version", "os_name", "sys_platform",
+        "platform_release", "platform_system", "platform_version",
+        "platform_machine", "platform_python_implementation",
+        "implementation_name", "implementation_version", "extra",
+    )
+}
+
+rule _marker {
+    choice(_marker_expr, _marker_or, _marker_and, _marker_paren)
+}
+
+rule _marker_expr {
+    seq(
+        marker_var,
+        optional(_space),
+        choice(version_cmp, marker_op),
+        optional(_space),
+        quoted_string,
+    )
+}
+
+rule _marker_paren {
+    prec_left(0, seq("(", optional(_space), _marker, optional(_space), ")"))
+}
+
+rule _marker_and {
+    prec_left(0, seq(
+        _marker, optional(_space),
+        alias("and", marker_op),
+        optional(_space), _marker,
+    ))
+}
+
+rule _marker_or {
+    prec_left(0, seq(
+        _marker, optional(_space),
+        alias("or", marker_op),
+        optional(_space), _marker,
+    ))
+}
+
+rule global_opt {
+    prec_left(1, choice(
+        seq(
+            alias(
+                choice("--no-binary", "--only-binary", "--trusted-host", "--use-feature"),
+                option,
+            ),
+            choice("=", _space),
+            choice(argument, quoted_string),
+        ),
+        alias(
+            choice("--no-index", "--prefer-binary", "--require-hashes", "--pre"),
+            option,
+        ),
+        seq(
+            alias("-i", option),
+            optional(_space),
+            choice(url, quoted_string),
+        ),
+        seq(
+            alias(choice("--index-url", "--extra-index-url"), option),
+            choice("=", _space),
+            choice(url, quoted_string),
+        ),
+        seq(
+            alias(choice("-c", "-r"), option),
+            optional(_space),
+            choice(alias(argument, path), quoted_string),
+        ),
+        seq(
+            alias(choice("--constraint", "--requirement"), option),
+            choice("=", _space),
+            choice(alias(argument, path), quoted_string),
+        ),
+        seq(
+            alias(choice("-e", "-f"), option),
+            optional(_space),
+            choice(alias(argument, path), quoted_string, url),
+        ),
+        seq(
+            alias(choice("--editable", "--find-links"), option),
+            choice("=", _space),
+            choice(alias(argument, path), quoted_string, url),
+        ),
+    ))
+}
+
+rule requirement_opt {
+    seq(
+        optional(_space),
+        alias(
+            choice("--global-option", "--config-settings", "--hash"),
+            option,
+        ),
+        choice("=", _space),
+        choice(argument, quoted_string),
+    )
+}
+
+rule argument { repeat1(regexp(r"(\S|\\ )")) }
+
+rule quoted_string {
+    choice(
+        seq("\"", field(content, regexp(r#"([^"]|\\")+"#)), "\""),
+        seq("'", field(content, regexp(r"([^']|\\')+")), "'"),
+    )
+}
+
+rule env_var {
+    seq("${", field(name, regexp(r"[A-Z0-9_]+")), "}")
+}
+
+rule linebreak { seq("\\", _end_of_line) }
+
+rule _end_of_line {
+    choice(
+        seq(_space, comment, regexp(r"\r?\n")),
+        seq(optional(_space), regexp(r"\r?\n")),
+    )
+}
+
+rule comment { regexp(r"#[^\n]*") }
+
+rule _space { prec(-1, repeat1(regexp(r"[ \t]"))) }
