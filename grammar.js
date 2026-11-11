@@ -15,35 +15,67 @@ export default grammar({
 
   inline: $ => [
     $._package_list,
-    $._end_of_line
+    $._end_of_line,
+    $._statement
   ],
 
   conflicts: $ => [
-    // FIXME: prec.right breaks inline comments
     [$.requirement],
+    // a space after a marker either continues it with and/or
+    // or separates it from an option or an inline comment
+    [$.marker_spec, $._marker_and, $._marker_or],
+    [$._url_marker_spec, $._marker_and, $._marker_or],
   ],
 
   word: $ => $.package,
 
   rules: {
-    file: $ => repeat(
-      choice(
-        seq(
-          optional($._space),
-          optional($.comment),
-          /\r?\n/
-        ),
-        seq(
-          optional($._space),
-          choice(
-            $.requirement,
-            $.url,
-            alias(/[./]\S*/, $.path),
-            $.global_opt
+    file: $ => seq(
+      repeat(
+        choice(
+          seq(
+            optional($._space),
+            optional($.comment),
+            /\r?\n/
           ),
-          $._end_of_line
+          seq(
+            optional($._space),
+            $._statement,
+            $._end_of_line
+          )
         )
-      )
+      ),
+      // the last line of a file may end without a line break
+      optional(choice(
+        $._space,
+        seq(optional($._space), $.comment),
+        seq(
+          optional($._space),
+          $._statement,
+          optional(seq($._space, optional($.comment)))
+        )
+      ))
+    ),
+
+    _statement: $ => choice(
+      $.requirement,
+      seq(
+        $.url,
+        optional(alias($._url_marker_spec, $.marker_spec))
+      ),
+      seq(
+        alias(/[./][^\s;]*/, $.path),
+        optional($.marker_spec)
+      ),
+      seq($.global_opt, repeat(seq($._space, $.global_opt)))
+    ),
+
+    // pip splits a marker off a URL only at "; "
+    _url_marker_spec: $ => seq(
+      $._space,
+      ';',
+      $._space,
+      $._marker
     ),
 
     requirement: $ => seq(
@@ -126,12 +158,12 @@ export default grammar({
       '<', '<=', '!=', '==', '>=', '>', '!=', '===', '~='
     )),
 
-    marker_spec: $ => prec.right(seq(
+    marker_spec: $ => seq(
       optional($._space),
       ';',
       optional($._space),
       $._marker
-    )),
+    ),
 
     marker_op: $ => choice('in', seq('not', $._space, 'in')),
 
