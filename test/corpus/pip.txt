@@ -130,3 +130,88 @@ six==1.16.0  # pinned
       (version_cmp)
       (version)))
   (comment))
+
+================================================================================
+a variable at the start of a path
+================================================================================
+
+${PROJECT_ROOT}/libs/core
+${WHEELHOUSE}/core-1.0-py3-none-any.whl ; python_version > "3.0"
+
+--------------------------------------------------------------------------------
+
+(file
+  (path)
+  (path)
+  (marker_spec
+    (marker_var)
+    (version_cmp)
+    (quoted_string)))
+
+================================================================================
+a marker after a URL with no space before the semicolon
+================================================================================
+
+https://example.com/pkg-1.0.tar.gz; python_version > "3.0"
+git+https://github.com/org/pkg.git@v1.0#egg=pkg; python_version > "3.0"
+https://example.com/pkg-1.0.tar.gz;python_version>"3.0"
+
+--------------------------------------------------------------------------------
+
+(file
+  (url)
+  (marker_spec
+    (marker_var)
+    (version_cmp)
+    (quoted_string))
+  (url)
+  (marker_spec
+    (marker_var)
+    (version_cmp)
+    (quoted_string))
+  (url))
+
+================================================================================
+words after the options of a line
+================================================================================
+
+-e ./libs/core ; python_version >= "3.8"
+-r base.txt and test tools
+--no-index local only --find-links ./wheels
+six==1.16.0 --hash=sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926 pinned
+
+--------------------------------------------------------------------------------
+
+(file
+  (global_opt
+    (option)
+    (path))
+  (global_opt
+    (option)
+    (path))
+  (global_opt
+    (option))
+  (global_opt
+    (option)
+    (path))
+  (requirement
+    (package)
+    (version_spec
+      (version_cmp)
+      (version))
+    (requirement_opt
+      (option)
+      (argument))))
+
+================================================================================
+quoted words after the options of a line
+================================================================================
+
+-e ./libs/core "dev only" 'see README'
+
+--------------------------------------------------------------------------------
+
+(file
+  (global_opt
+    (option)
+    (path)))

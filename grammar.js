@@ -25,6 +25,11 @@ export default grammar({
     // or separates it from an option or an inline comment
     [$.marker_spec, $._marker_and, $._marker_or],
     [$._url_marker_spec, $._marker_and, $._marker_or],
+    [$._url_semicolon_marker_spec, $._marker_and, $._marker_or],
+    // a ";" after a URL either stays in the URL or opens its marker, which only a space
+    // after it can tell
+    [$._url_line_semicolon],
+    [$._url_line_semicolon, $._url_marker_spec],
   ],
 
   word: $ => $.package,
@@ -60,23 +65,89 @@ export default grammar({
     _statement: $ => choice(
       $.requirement,
       seq(
-        $.url,
+        alias($._url_line, $.url),
         optional(alias($._url_marker_spec, $.marker_spec))
       ),
+      // a URL that ends in ";": the line ends there, or the marker follows right after it
       seq(
-        alias(/[./][^\s;]*/, $.path),
-        optional($.marker_spec)
+        alias($._url_line_semicolon, $.url),
+        optional(choice(
+          alias($._url_semicolon_marker_spec, $.marker_spec),
+          seq($._semicolon_space, optional($.comment))
+        ))
       ),
-      seq($.global_opt, repeat(seq($._space, $.global_opt)))
+      seq(
+        alias(token(choice(
+          /[./][^\s;]*/,
+          // pip expands the variable first; with a "/" after it, the line is a path
+          /\$\{[A-Z0-9_]+\}\/[^\s;]*/
+        )), $.path),
+        // pip splits a path line at the ";", and with nothing after it there is no marker
+        optional(choice($.marker_spec, ';'))
+      ),
+      seq(
+        $.global_opt,
+        repeat(seq($._space, choice($.global_opt, $._ignored_word)))
+      )
     ),
 
-    // pip splits a marker off a URL only at "; "
+    // pip splits a marker off a URL line only at the first ";" with a space after it, so a
+    // ";" with anything else after it stays in the URL
+    _url_line: $ => seq(
+      field('scheme', choice(
+        /[a-zA-Z+]+:\/\//,
+        /[bB][zZ][rR]\+[lL][pP]:/
+      )),
+      repeat1(choice($.env_var, /[^\s;]/, /;+[^\s;]/))
+    ),
+
+    _url_line_semicolon: $ => seq($._url_line, repeat1(';')),
+
     _url_marker_spec: $ => seq(
-      $._space,
+      optional($._space),
       ';',
-      $._space,
+      $._semicolon_space,
+      optional($._space),
       $._marker
     ),
+
+    // a space right after the last ";" of the URL is _semicolon_space, so the whitespace
+    // here starts with a tab, which pip strips off the end of the URL
+    _url_semicolon_marker_spec: $ => seq(
+      optional($._space),
+      ';',
+      $._semicolon_space,
+      optional($._space),
+      $._marker
+    ),
+
+    // the space right after a ";" on a URL line, where pip splits off the marker; a tab
+    // there does not split
+    _semicolon_space: _ => token(prec(1, / /)),
+
+    // optparse reads the options of a line and pip drops the words left over. Before that,
+    // pip strips a comment and splits the words with shlex, so such a word does not start
+    // with "#", closes its quotes, has no "#" right after a space inside them, and does not
+    // end in "\" (where pip joins the next line); and it must not start with "-" once its
+    // quotes are removed
+    _ignored_word: _ => {
+      const inDouble = choice(/[^\s"\\]/, /\\\S/, /[ \t]+[^\s"\\#]/, /[ \t]+\\\S/);
+      const inSingle = choice(/[^\s']/, /[ \t]+[^\s'#]/);
+      return token(seq(
+        choice(
+          /[^\s#'"\\-]/,
+          /\\[^\s\\-]/,
+          seq('"', choice(/[^\s"\\-]/, /\\\S/, /[ \t]+[^\s"\\#]/, /[ \t]+\\\S/), repeat(inDouble), /[ \t]*/, '"'),
+          seq("'", choice(/[^\s'-]/, /[ \t]+[^\s'#]/), repeat(inSingle), /[ \t]*/, "'")
+        ),
+        repeat(choice(
+          /[^\s'"\\]/,
+          /\\[^\s\\]/,
+          seq('"', repeat(inDouble), /[ \t]*/, '"'),
+          seq("'", repeat(inSingle), /[ \t]*/, "'")
+        ))
+      ));
+    },
 
     requirement: $ => seq(
       $.package,
@@ -86,7 +157,10 @@ export default grammar({
         $.url_spec
       )),
       optional($.marker_spec),
-      repeat($.requirement_opt)
+      optional(seq(
+        $.requirement_opt,
+        repeat(choice($.requirement_opt, seq($._space, $._ignored_word)))
+      ))
     ),
 
     package: _ => /[a-zA-Z0-9]([a-zA-Z0-9._-]*[a-zA-Z0-9])?/,
