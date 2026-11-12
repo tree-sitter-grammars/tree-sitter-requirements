@@ -42,6 +42,10 @@
           "named": true
         },
         {
+          "type": "marker_spec",
+          "named": true
+        },
+        {
           "type": "path",
           "named": true
         },
